@@ -11,24 +11,39 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Kodu al
+        uses: actions/checkout@v5
+
+      - name: Java 17 kur
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-      - run: gradle -p android assembleRelease --no-daemon
-      - run: cp android/app/build/outputs/apk/release/app-release.apk RabJump.apk
-      - uses: actions/upload-artifact@v4
+
+      - name: Gradle 8.9 indir
+        run: |
+          wget -q https://services.gradle.org/distributions/gradle-8.9-bin.zip
+          unzip -q gradle-8.9-bin.zip -d "$HOME/gradle"
+
+      - name: Android lisanslarini kabul et
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+
+      - name: APK derle
+        run: '"$HOME/gradle/gradle-8.9/bin/gradle" -p android assembleRelease --no-daemon --stacktrace'
+
+      - name: APK'yi adlandir
+        run: cp android/app/build/outputs/apk/release/app-release.apk RabJump.apk
+
+      - name: APK'yi indirilebilir yap
+        uses: actions/upload-artifact@v4
         with:
           name: RabJump-apk
           path: RabJump.apk
-      - if: startsWith(github.ref, 'refs/tags/v')
+
+      - name: Surum sayfasina ekle
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
           files: RabJump.apk
