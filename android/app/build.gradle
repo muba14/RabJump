@@ -1,0 +1,46 @@
+plugins {
+    id 'com.android.application'
+}
+
+android {
+    namespace 'com.rabjump.game'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId 'com.rabjump.game'
+        minSdk 24
+        targetSdk 34
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            // Kişisel kullanım için repoya eklenmiş anahtar. Play Store'a koyacaksan
+            // kendi gizli anahtarını oluştur ve buradaki şifreleri değiştir.
+            storeFile file('rabjump.keystore')
+            storePassword 'rabjump'
+            keyAlias 'rabjump'
+            keyPassword 'rabjump'
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+
+    sourceSets {
+        main {
+            // Oyunun kendisi tek kaynaktan gelir: repodaki web/ klasörü
+            assets.srcDirs = ['../../web']
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
