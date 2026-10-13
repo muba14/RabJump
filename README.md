@@ -1,5 +1,13 @@
 <p align="center"><img src="docs/cover.png" alt="RabJump" width="100%"></p>
 
+
+
+
+
+
+
+
+
 # RabJump
 
 Alttan lav yükselirken basamaktan basamağa zıplayan bir tavşanla oynanan pixel art mobil oyun. Yukarı çıktıkça bölümler ve rakipler değişir; bir rakibe çarpmak ya da lava yakalanmak oyunu bitirir.
